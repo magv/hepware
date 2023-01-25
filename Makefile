@@ -3,7 +3,21 @@ CXX=c++
 FC=gfortran
 
 all: phony
-	@echo "This is HEPWARE. Type '${MAKE} <software>.done'."
+	@echo "This is HEPWARE. Type '${MAKE} <software>.done' or '${MAKE} all.done'."
+
+all.done: \
+	cln.done \
+	feynson.done \
+	flint.done \
+	form.done \
+	ginac.done \
+	gmp.done \
+	jemalloc.done \
+	mpfr.done \
+	nauty.done \
+	qgraf.done \
+	zlib.done \
+	phony
 
 clean: phony
 	rm -rf bin/ build/ include/ lib/ share/ *.done
