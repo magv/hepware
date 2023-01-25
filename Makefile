@@ -10,12 +10,15 @@ all.done: \
 	feynson.done \
 	flint.done \
 	form.done \
+	fuchsia.done \
 	ginac.done \
 	gmp.done \
+	hypothread.done \
 	jemalloc.done \
 	mpfr.done \
 	nauty.done \
 	qgraf.done \
+	ratnormal.done \
 	zlib.done \
 	phony
 
@@ -27,7 +30,7 @@ phony:;
 DIR=${CURDIR}
 DEP_CFLAGS=-I${DIR}/include -O3 -fno-omit-frame-pointer -fdata-sections -ffunction-sections
 DEP_FFLAGS=-I${DIR}/include -O3
-DEP_LDFLAGS=-L${DIR}/lib
+DEP_LDFLAGS=-L${DIR}/lib -Wl,--gc-sections
 
 build/.dir:
 	mkdir -p bin build include lib share
@@ -35,7 +38,8 @@ build/.dir:
 
 build/jemalloc.tar.bz2: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"https://github.com/jemalloc/jemalloc/releases/download/5.3.0/jemalloc-5.3.0.tar.bz2"
+		"https://github.com/jemalloc/jemalloc/releases/download/5.3.0/jemalloc-5.3.0.tar.bz2" \
+		|| rm -f $@
 
 jemalloc.done: build/jemalloc.tar.bz2 build/.dir
 	rm -rf build/jemalloc-*/
@@ -53,7 +57,8 @@ jemalloc.done: build/jemalloc.tar.bz2 build/.dir
 
 build/gmp.tar.xz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"https://gmplib.org/download/gmp/gmp-6.2.1.tar.xz"
+		"https://gmplib.org/download/gmp/gmp-6.2.1.tar.xz" \
+		|| rm -f $@
 
 gmp.done: build/gmp.tar.xz
 	rm -rf build/gmp-*/
@@ -70,7 +75,8 @@ gmp.done: build/gmp.tar.xz
 
 build/mpfr.tar.xz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"https://www.mpfr.org/mpfr-4.1.1/mpfr-4.1.1.tar.xz"
+		"https://www.mpfr.org/mpfr-4.1.1/mpfr-4.1.1.tar.xz" \
+		|| rm -f $@
 
 mpfr.done: build/mpfr.tar.xz gmp.done
 	rm -rf build/mpfr-*/
@@ -87,7 +93,8 @@ mpfr.done: build/mpfr.tar.xz gmp.done
 
 build/flint.tar.gz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"http://flintlib.org/flint-2.9.0.tar.gz"
+		"http://flintlib.org/flint-2.9.0.tar.gz" \
+		|| rm -f $@
 
 flint.done: build/flint.tar.gz gmp.done mpfr.done
 	rm -rf build/flint-*/
@@ -102,7 +109,8 @@ flint.done: build/flint.tar.gz gmp.done mpfr.done
 
 build/zlib.tar.xz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"http://zlib.net/zlib-1.2.13.tar.xz"
+		"http://zlib.net/zlib-1.2.13.tar.xz" \
+		|| rm -f $@
 
 zlib.done: build/zlib.tar.xz
 	rm -rf build/zlib-*/
@@ -115,10 +123,51 @@ zlib.done: build/zlib.tar.xz
 	+${MAKE} -C build/zlib-*/ install
 	date >$@
 
+build/fuchsia.tar.gz: build/.dir
+	wget --no-use-server-timestamps -qO $@ \
+		"https://github.com/magv/fuchsia.cpp/archive/refs/heads/master.tar.gz" \
+		|| rm -f $@
+
+fuchsia.done: build/fuchsia.tar.gz ginac.done
+	rm -rf build/fuchsia.cpp-*/
+	cd build && tar xf fuchsia.tar.gz
+	+env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
+		${MAKE} -C build/fuchsia.cpp-*/
+	cd build/fuchsia.cpp-*/ && cp -a build/fuchsia "${DIR}/bin/"
+	+${MAKE} -C build/fuchsia.cpp-*/ clean
+	date >$@
+
+build/ratnormal.tar.gz: build/.dir
+	wget --no-use-server-timestamps -qO $@ \
+		"https://github.com/magv/ratnormal/archive/refs/heads/master.tar.gz" \
+		|| rm -f $@
+
+ratnormal.done: build/ratnormal.tar.gz ginac.done flint.done
+	rm -rf build/ratnormal-*/
+	cd build && tar xf ratnormal.tar.gz
+	+env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
+		${MAKE} -C build/ratnormal-*/
+	cd build/ratnormal-*/ && cp -a ratnormal "${DIR}/bin/"
+	date >$@
+
+build/hypothread.tar.gz: build/.dir
+	wget --no-use-server-timestamps -qO $@ \
+		"https://github.com/magv/hypothread/archive/refs/heads/master.tar.gz" \
+		|| rm -f $@
+
+hypothread.done: build/hypothread.tar.gz
+	rm -rf build/hypothread-*/
+	cd build && tar xf hypothread.tar.gz
+	+env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
+		${MAKE} -C build/hypothread-*/
+	cd build/hypothread-*/ && cp -a hypothread "${DIR}/bin/"
+	cd build/hypothread-*/ && make clean
+	date >$@
 build/qgraf.tar.gz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
 		--user anonymous --password anonymous \
-		"http://qgraf.tecnico.ulisboa.pt/v3.6/qgraf-3.6.5.tgz"
+		"http://qgraf.tecnico.ulisboa.pt/v3.6/qgraf-3.6.5.tgz" \
+		|| rm -f $@
 
 qgraf.done: build/qgraf.tar.gz
 	rm -rf build/qgraf/
@@ -130,7 +179,8 @@ qgraf.done: build/qgraf.tar.gz
 
 build/form.tar.gz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"https://github.com/vermaseren/form/releases/download/v4.3.0/form-4.3.0.tar.gz"
+		"https://github.com/vermaseren/form/releases/download/v4.3.0/form-4.3.0.tar.gz" \
+		|| rm -f $@
 
 form.done: build/form.tar.gz gmp.done zlib.done
 	rm -rf build/form-*/
@@ -151,7 +201,8 @@ form.done: build/form.tar.gz gmp.done zlib.done
 
 build/cln.tar.bz2: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"https://www.ginac.de/CLN/cln-1.3.6.tar.bz2"
+		"https://www.ginac.de/CLN/cln-1.3.6.tar.bz2" \
+		|| rm -f $@
 
 cln.done: build/cln.tar.bz2 gmp.done
 	rm -rf build/cln-*/
@@ -171,7 +222,8 @@ cln.done: build/cln.tar.bz2 gmp.done
 
 build/ginac.tar.bz2: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"https://www.ginac.de/ginac-1.8.5.tar.bz2"
+		"https://www.ginac.de/ginac-1.8.5.tar.bz2" \
+		|| rm -f $@
 
 ginac.done: build/ginac.tar.bz2 cln.done
 	rm -rf build/ginac-*/
@@ -191,7 +243,8 @@ ginac.done: build/ginac.tar.bz2 cln.done
 
 build/nauty.tar.gz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"https://pallini.di.uniroma1.it/nauty2_8_6.tar.gz"
+		"https://pallini.di.uniroma1.it/nauty2_8_6.tar.gz" \
+		|| rm -f $@
 
 nauty.done: build/nauty.tar.gz build/.dir
 	rm -rf build/nauty*/
@@ -210,7 +263,8 @@ nauty.done: build/nauty.tar.gz build/.dir
 
 build/feynson.tar.gz: build/.dir ginac.done nauty.done
 	wget --no-use-server-timestamps -qO $@ \
-		"https://github.com/magv/feynson/archive/refs/heads/master.tar.gz"
+		"https://github.com/magv/feynson/archive/refs/heads/master.tar.gz" \
+		|| rm -f $@
 
 feynson.done: build/feynson.tar.gz ginac.done nauty.done
 	rm -rf build/feynson-*/

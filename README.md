@@ -29,22 +29,28 @@ FreeBSD, and other operating systems might or might not work.
 * [Feynson] (`feynson.done`).
 * [FLINT] (`flint.done`).
 * [FORM] (`form.done`).
+* [Fuchsia] (`fuchsia.done`).
 * [GiNaC] (`ginac.done`).
 * [GMP] (`gmp.done`).
+* [Hypothread] (`ratnormal.done`).
 * [Jemalloc] (`jemalloc.done`).
 * [MPFR] (`mpfr.done`).
 * [Nauty and Traces] (`nauty.done`).
 * [QGraf] (`qgraf.done`).
+* [Ratnormal] (`ratnormal.done`).
 * [zlib] (`zlib.done`).
 
 [cln]: https://www.ginac.de/CLN/
 [feynson]: https://github.com/magv/feynson
 [flint]: https://flintlib.org/
 [form]: https://github.com/vermaseren/form
+[fuchsia]: https://github.com/magv/fuchsia.cpp
 [ginac]: https://www.ginac.de/
 [gmp]: https://gmplib.org/
+[hypothread]: https://github.com/magv/hypothread
 [jemalloc]: http://jemalloc.net/
 [mpfr]: https://www.mpfr.org/
 [nauty and traces]: https://pallini.di.uniroma1.it/
 [qgraf]: http://cfif.ist.utl.pt/~paulo/qgraf.html
+[ratnormal]: https://github.com/magv/ratnormal
 [zlib]: https://www.zlib.net/
