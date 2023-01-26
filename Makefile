@@ -9,6 +9,7 @@ all.done: \
 	cln.done \
 	fermat.done \
 	feynson.done \
+	fire6.done \
 	firefly.done \
 	flint.done \
 	form.done \
@@ -371,7 +372,26 @@ feynson.done: build/feynson.tar.gz ginac.done nauty.done
 	cd build/feynson-*/ && cp -a feynson "${DIR}/bin/"
 	date >$@
 
-# FireFly
+## FIRE6
+
+build/fire6.tar.gz: build/.dir
+	wget --no-use-server-timestamps -qO $@ \
+		"https://bitbucket.org/feynmanIntegrals/fire/get/master.tar.gz" \
+		|| rm -f $@
+
+fire6.done: build/fire6.tar.gz
+	rm -rf build/feynmanIntegrals-fire-*/
+	cd build && tar xf fire6.tar.gz
+	cd build/feynmanIntegrals-fire-*/FIRE6 && \
+		./configure --enable_zlib --enable_snappy --enable_lthreads --enable_tcmalloc --enable_zstd
+	+${MAKE} -C build/feynmanIntegrals-fire-*/FIRE6 dep
+	+${MAKE} -C build/feynmanIntegrals-fire-*/FIRE6
+	rm -rf share/fire6/
+	mv build/feynmanIntegrals-fire-*/FIRE6 share/fire6
+	echo "HEPWARE: FIRE6 is now located at ${DIR}/share/fire6"
+	date >$@
+
+## FireFly
 
 build/firefly.tar.gz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \

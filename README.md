@@ -8,14 +8,16 @@ dependencies too, the process is tedious and error-prone.
 
 This is where *hepware* comes in: we package instructions to
 install various libraries and tools. E.g. to install [FORM] along
-with all of its dependencies, get *hepware*, and simply type:
+with all of its dependencies, get *hepware* and simply type:
 
     make form.done
 
 ## Where is the software placed?
 
 Into the subdirectories. Binaries go into `bin/`, include files
-into `include/`, libraries into `lib/`.
+into `include/`, libraries into `lib/`. Software that can not
+be properly installed into these directories is placed into
+subdirectories of `shared/`.
 
 ## What is required?
 
@@ -25,18 +27,21 @@ into `include/`, libraries into `lib/`.
 * The standard set of standard GNU development tools (i.e. `make`,
   `sed`, etc).
 
-* CMake.
+* [CMake].
 
 * Autotools.
 
 MacOS, FreeBSD, and other operating systems might or might not
 work.
 
+[cmake]: https://cmake.org/
+
 ## Available software
 
 * [CLN] (`cln.done`).
 * [Fermat] (`fermat.done`).
 * [Feynson] (`feynson.done`).
+* [FIRE6] (`fire6.done`).
 * [FireFly] (`firefly.done`).
 * [FLINT] (`flint.done`).
 * [FORM] (`form.done`).
@@ -56,6 +61,7 @@ work.
 [cln]: https://www.ginac.de/CLN/
 [fermat]: http://home.bway.net/lewis
 [feynson]: https://github.com/magv/feynson
+[fire6]: https://bitbucket.org/feynmanIntegrals/fire/
 [firefly]: https://gitlab.com/firefly-library/firefly
 [flint]: https://flintlib.org/
 [form]: https://github.com/vermaseren/form
