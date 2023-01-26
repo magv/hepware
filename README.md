@@ -43,7 +43,7 @@ work.
 * [Fuchsia] (`fuchsia.done`).
 * [GiNaC] (`ginac.done`).
 * [GMP] (`gmp.done`).
-* [Hypothread] (`ratnormal.done`).
+* [Hypothread] (`hypothread.done`).
 * [Jemalloc] (`jemalloc.done`).
 * [Kira] (`kira.done`).
 * [MPFR] (`mpfr.done`).
