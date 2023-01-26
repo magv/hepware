@@ -44,6 +44,7 @@ work.
 * [FIRE6] (`fire6.done`).
 * [FireFly] (`firefly.done`).
 * [FLINT] (`flint.done`).
+* [Forcer] (`forcer.done`).
 * [FORM] (`form.done`).
 * [Fuchsia] (`fuchsia.done`).
 * [GiNaC] (`ginac.done`).
@@ -64,6 +65,7 @@ work.
 [fire6]: https://bitbucket.org/feynmanIntegrals/fire/
 [firefly]: https://gitlab.com/firefly-library/firefly
 [flint]: https://flintlib.org/
+[forcer]: https://github.com/benruijl/forcer
 [form]: https://github.com/vermaseren/form
 [fuchsia]: https://github.com/magv/fuchsia.cpp
 [ginac]: https://www.ginac.de/

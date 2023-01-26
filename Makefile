@@ -12,6 +12,7 @@ all.done: \
 	fire6.done \
 	firefly.done \
 	flint.done \
+	forcer.done \
 	form.done \
 	fuchsia.done \
 	ginac.done \
@@ -145,6 +146,21 @@ flint.done: build/flint.tar.gz gmp.done mpfr.done
 	+${MAKE} -C build/flint-*/ QUIET_CC="" QUIET_CXX="" QUIET_AR=""
 	+${MAKE} -C build/flint-*/ install
 	date >$@
+
+## Forcer
+
+build/forcer.tar.gz: build/.dir
+	wget --no-use-server-timestamps -qO $@ \
+		"https://github.com/benruijl/forcer/archive/refs/heads/master.tar.gz" \
+		|| rm -f $@
+
+forcer.done: build/forcer.tar.gz form.done
+	rm -rf build/forcer-*/
+	cd build && tar xf forcer.tar.gz
+	rm -rf "${DIR}/share/forcer"
+	cd build && mv forcer-*/ "${DIR}/share/forcer"
+	date >$@
+	@echo "HEPWARE: You can find Forcer at ${DIR}/share/forcer"
 
 ## Yaml-cpp
 
@@ -388,8 +404,8 @@ fire6.done: build/fire6.tar.gz
 	+${MAKE} -C build/feynmanIntegrals-fire-*/FIRE6
 	rm -rf share/fire6/
 	mv build/feynmanIntegrals-fire-*/FIRE6 share/fire6
-	echo "HEPWARE: FIRE6 is now located at ${DIR}/share/fire6"
 	date >$@
+	@echo "HEPWARE: You can find FIRE6 at ${DIR}/share/fire6"
 
 ## FireFly
 
