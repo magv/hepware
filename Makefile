@@ -24,6 +24,7 @@ all.done: \
 	nauty.done \
 	qgraf.done \
 	ratnormal.done \
+	ratracer.done \
 	yaml-cpp.done \
 	zlib.done \
 	phony
@@ -232,6 +233,28 @@ ratnormal.done: build/ratnormal.tar.gz ginac.done flint.done
 	+env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
 		${MAKE} -C build/ratnormal-*/
 	cd build/ratnormal-*/ && cp -a ratnormal "${DIR}/bin/"
+	date >$@
+
+## Ratracer
+
+build/ratracer.tar.gz: build/.dir
+	wget --no-use-server-timestamps -qO $@ \
+		"https://github.com/magv/ratracer/archive/refs/heads/master.tar.gz" \
+		|| rm -f $@
+
+ratracer.done: build/ratracer.tar.gz ginac.done flint.done gmp.done jemalloc.done mpfr.done zlib.done
+	rm -rf build/ratracer-*/
+	cd build && tar xf ratracer.tar.gz
+	+${MAKE} -C build/ratracer-*/ build/.dir
+	cd build/ratracer-*/build/ && touch \
+		mpfr.tar.xz mpfr.done \
+		gmp.tar.xz gmp.done \
+		flint.tar.gz flint.done \
+		jemalloc.tar.bz2 jemalloc.done \
+		zlib.tar.xz zlib.done
+	+env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
+		${MAKE} -C build/ratracer-*/ ratracer
+	cd build/ratracer-*/ && cp -a tools/* ratracer "${DIR}/bin/"
 	date >$@
 
 ## Hypothread

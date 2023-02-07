@@ -56,6 +56,7 @@ work.
 * [Nauty and Traces] (`nauty.done`).
 * [QGraf] (`qgraf.done`).
 * [Ratnormal] (`ratnormal.done`).
+* [Ratracer] (`ratracer.done`).
 * [Yaml-cpp] (`yaml-cpp.done`).
 * [zlib] (`zlib.done`).
 
@@ -77,5 +78,6 @@ work.
 [nauty and traces]: https://pallini.di.uniroma1.it/
 [qgraf]: http://cfif.ist.utl.pt/~paulo/qgraf.html
 [ratnormal]: https://github.com/magv/ratnormal
+[ratracer]: https://github.com/magv/ratracer
 [yaml-cpp]: https://github.com/jbeder/yaml-cpp
 [zlib]: https://www.zlib.net/
