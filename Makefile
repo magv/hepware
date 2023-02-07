@@ -282,7 +282,9 @@ form.done: build/form.tar.gz gmp.done zlib.done
 			--prefix="${DIR}" --libdir="${DIR}/lib" \
 			--includedir="${DIR}/include" --bindir="${DIR}/bin" \
 			--with-zlib="${DIR}" --with-gmp="${DIR}" \
-			--enable-scalar=yes --enable-threaded=yes \
+			--enable-scalar=yes \
+			--enable-threaded=yes \
+			--enable-debug=yes \
 			--enable-parform=no \
 			--enable-static-link=no \
 			--enable-native=no
