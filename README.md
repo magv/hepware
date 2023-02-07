@@ -10,7 +10,11 @@ This is where *hepware* comes in: we package instructions to
 install various libraries and tools. E.g. to install [FORM] along
 with all of its dependencies, get *hepware* and simply type:
 
-    make form.done
+    make form.done -jN
+
+... where `N` is the number of threads the build process is
+allowed to use in parallel (set this to the number of cores the
+build machine has).
 
 ## Where is the software placed?
 
