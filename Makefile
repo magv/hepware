@@ -5,29 +5,31 @@ FC=gfortran
 all: phony
 	@echo "This is HEPWARE. Type '${MAKE} <software>.done' or '${MAKE} all.done'."
 
-all.done: \
-	cln.done \
-	fermat.done \
-	feynson.done \
-	fire6.done \
-	firefly.done \
-	flint.done \
-	forcer.done \
-	form.done \
-	fuchsia.done \
-	ginac.done \
-	gmp.done \
-	hypothread.done \
-	jemalloc.done \
-	kira.done \
-	mpfr.done \
-	nauty.done \
-	qgraf.done \
-	ratnormal.done \
-	ratracer.done \
-	yaml-cpp.done \
-	zlib.done \
-	phony
+ALL=\
+	cln \
+	fermat \
+	feynson \
+	fire6 \
+	firefly \
+	flint \
+	forcer \
+	form \
+	fuchsia \
+	ginac \
+	gmp \
+	googlebenchmark \
+	hypothread \
+	jemalloc \
+	kira \
+	mpfr \
+	nauty \
+	qgraf \
+	ratnormal \
+	ratracer \
+	yaml-cpp \
+	zlib
+
+all.done: $(addsuffix .done,${ALL}) phony
 
 clean: phony
 	rm -rf bin/ build/ include/ lib/ share/ *.done
@@ -336,6 +338,36 @@ cln.done: build/cln.tar.bz2 gmp.done
 			--enable-shared=no --enable-static=yes
 	+${MAKE} -C build/cln-*/
 	+${MAKE} -C build/cln-*/ install
+	date >$@
+
+## Google Benchmark
+
+build/benchmark.tar.gz: build/.dir
+	wget --no-use-server-timestamps -qO $@ \
+		"https://github.com/google/benchmark/archive/refs/tags/v1.7.1.tar.gz" || \
+		rm -f "$@"
+
+build/googletest.tar.gz: build/.dir
+	wget --no-use-server-timestamps -qO $@ \
+		"https://github.com/google/googletest/archive/refs/tags/release-1.12.1.tar.gz" || \
+		rm -f "$@"
+
+googlebenchmark.done: build/benchmark.tar.gz build/googletest.tar.gz
+	rm -rf build/benchmark-*/
+	cd build && tar xf benchmark.tar.gz
+	cd build/benchmark-*/ && \
+		tar xf ../googletest.tar.gz && \
+		mv googletest-release-* googletest && \
+		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
+		cmake . \
+			-DCMAKE_INSTALL_PREFIX="${DIR}" \
+			-DCMAKE_INSTALL_LIBDIR="lib" \
+			-DCMAKE_BUILD_TYPE=Release \
+			-DBENCHMARK_INSTALL_DOCS=OFF \
+			-DBENCHMARK_ENABLE_GTEST_TESTS=OFF \
+			-DBENCHMARK_ENABLE_TESTING=OFF
+	+${MAKE} -C build/benchmark-*/ VERBOSE=1
+	+${MAKE} -C build/benchmark-*/ install
 	date >$@
 
 ## GiNaC

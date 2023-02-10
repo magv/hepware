@@ -53,6 +53,7 @@ work.
 * [Fuchsia] (`fuchsia.done`).
 * [GiNaC] (`ginac.done`).
 * [GMP] (`gmp.done`).
+* [Google Benchmark] (`googlebenchmark.done`).
 * [Hypothread] (`hypothread.done`).
 * [Jemalloc] (`jemalloc.done`).
 * [Kira] (`kira.done`).
@@ -75,6 +76,7 @@ work.
 [fuchsia]: https://github.com/magv/fuchsia.cpp
 [ginac]: https://www.ginac.de/
 [gmp]: https://gmplib.org/
+[google benchmark]: https://github.com/google/benchmark
 [hypothread]: https://github.com/magv/hypothread
 [jemalloc]: http://jemalloc.net/
 [kira]: https://gitlab.com/kira-pyred/kira
