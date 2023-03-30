@@ -41,6 +41,8 @@ DEP_CFLAGS=-I${DIR}/include -O3 -g -fno-omit-frame-pointer -fdata-sections -ffun
 DEP_FFLAGS=-I${DIR}/include -O3 ${FFLAGS}
 DEP_LDFLAGS=-L${DIR}/lib -Wl,--gc-sections ${LDFLAGS}
 
+MAKEOVERRIDES=
+
 build/.dir:
 	mkdir -p bin build include lib share
 	date >$@
