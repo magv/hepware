@@ -374,7 +374,7 @@ googlebenchmark.done: build/benchmark.tar.gz build/googletest.tar.gz
 
 build/ginac.tar.bz2: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"https://www.ginac.de/ginac-1.8.5.tar.bz2" \
+		"https://www.ginac.de/ginac-1.8.6.tar.bz2" \
 		|| rm -f $@
 
 ginac.done: build/ginac.tar.bz2 cln.done
