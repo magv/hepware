@@ -385,12 +385,12 @@ ginac.done: build/ginac.tar.bz2 cln.done
 	cd build/ginac-*/ && sed -i.bak 's/readline/NOreadline/g' configure
 	cd build/ginac-*/ && \
 		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
+			PKG_CONFIG=false CLN_CFLAGS="-I${DIR}/include" CLN_LIBS="-L${DIR}/lib -lcln" \
 		./configure \
 			--prefix="${DIR}" --libdir="${DIR}/lib" \
 			--includedir="${DIR}/include" --bindir="${DIR}/bin" \
-			--enable-shared=no --enable-static=yes --with-pic --enable-excompiler=no 
-			--disable-rpath \
-			CLN_CFLAGS="" CLN_LIBS="-lcln"
+			--enable-shared=no --enable-static=yes --with-pic \
+			--enable-excompiler=no --disable-rpath
 	+${MAKE} -C build/ginac-*/
 	+${MAKE} -C build/ginac-*/ install
 	date >$@
