@@ -37,9 +37,9 @@ clean: phony
 phony:;
 
 DIR=${CURDIR}
-DEP_CFLAGS=-I${DIR}/include -O3 -g -fno-omit-frame-pointer -fdata-sections -ffunction-sections
-DEP_FFLAGS=-I${DIR}/include -O3
-DEP_LDFLAGS=-L${DIR}/lib -Wl,--gc-sections
+DEP_CFLAGS=-I${DIR}/include -O3 -g -fno-omit-frame-pointer -fdata-sections -ffunction-sections ${CFLAGS}
+DEP_FFLAGS=-I${DIR}/include -O3 ${FFLAGS}
+DEP_LDFLAGS=-L${DIR}/lib -Wl,--gc-sections ${LDFLAGS}
 
 build/.dir:
 	mkdir -p bin build include lib share
