@@ -414,7 +414,8 @@ nauty.done: build/nauty.tar.gz build/.dir
 	+${MAKE} -C build/nauty*/
 	cd build/nauty*/ && cp -a dreadnaut "${DIR}/bin/"
 	cd build/nauty*/ && cp -a nauty.a "${DIR}/lib/libnauty.a"
-	cd build/nauty*/ && cp -a *.h "${DIR}/include/"
+	mkdir -p "${DIR}/include/nauty/"
+	cd build/nauty*/ && cp -a *.h "${DIR}/include/nauty/"
 	date >$@
 
 ## Fermat
