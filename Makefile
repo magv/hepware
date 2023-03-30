@@ -323,7 +323,7 @@ form.done: build/form.tar.gz gmp.done zlib.done
 
 build/cln.tar.bz2: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"https://www.ginac.de/CLN/cln-1.3.6.tar.bz2" \
+		"https://github.com/gudrunhe/secdec/raw/ffa14e1c686ebb29e21f69e49d991e7000a6b6c6/pySecDecContrib/cln-1.3.6.tar.bz2" \
 		|| rm -f $@
 
 cln.done: build/cln.tar.bz2 gmp.done
