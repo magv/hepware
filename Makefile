@@ -282,7 +282,7 @@ hypothread.done: build/hypothread.tar.gz
 build/qgraf.tar.gz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
 		--user anonymous --password anonymous \
-		"http://qgraf.tecnico.ulisboa.pt/v3.6/qgraf-3.6.5.tgz" \
+		"http://qgraf.tecnico.ulisboa.pt/v3.6/qgraf-3.6.6.tgz" \
 		|| rm -f $@
 
 qgraf.done: build/qgraf.tar.gz
