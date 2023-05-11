@@ -118,7 +118,7 @@ gmp.done: build/gmp.tar.xz
 
 build/mpfr.tar.xz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"https://www.mpfr.org/mpfr-4.1.1/mpfr-4.1.1.tar.xz" \
+		"https://www.mpfr.org/mpfr-4.2.0/mpfr-4.2.0.tar.xz" \
 		|| rm -f $@
 
 mpfr.done: build/mpfr.tar.xz gmp.done
