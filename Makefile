@@ -297,7 +297,7 @@ qgraf.done: build/qgraf.tar.gz
 
 build/form.tar.gz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"https://github.com/vermaseren/form/releases/download/v4.3.0/form-4.3.0.tar.gz" \
+		"https://github.com/vermaseren/form/releases/download/v4.3.1/form-4.3.1.tar.gz" \
 		|| rm -f $@
 
 form.done: build/form.tar.gz gmp.done zlib.done
