@@ -23,6 +23,16 @@ into `include/`, libraries into `lib/`. Software that can not
 be properly installed into these directories is placed into
 subdirectories of `shared/`.
 
+To use the installed programs you'll probably want to add the
+`bin/` subdirectory to your `PATH`, for example using
+
+    export PATH=/path/to/hepware/bin:$PATH
+
+Similarly, to use the libraries you'll need to add
+`-I/path/to/hepware/include` flag to your C compiler options and
+`-L/path/to/hepware/lib` flag to your linker options. How to do
+this depends on the software you are trying to compile.
+
 ## What is required?
 
 * A Linux system with recent C (GCC or Clang), C++ (GCC or Clang),
