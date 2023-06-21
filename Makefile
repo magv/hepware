@@ -75,7 +75,7 @@ build/kira.tar.bz2: build/.dir
 		"https://gitlab.com/kira-pyred/kira/-/archive/master/kira-master.tar.bz2" \
 		|| rm -f $@
 
-kira.done: build/kira.tar.bz2 fermat.done flint.done ginac.done jemalloc.done yaml-cpp.done zlib.done
+kira.done: build/kira.tar.bz2 firefly.done fermat.done flint.done ginac.done jemalloc.done yaml-cpp.done zlib.done
 	rm -rf build/kira-*/
 	cd build && tar xf kira.tar.bz2
 	cd build/kira-*/ && autoreconf -i
