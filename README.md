@@ -16,6 +16,10 @@ with all of its dependencies, get *hepware* and simply type:
 allowed to use in parallel (set this to the number of cores the
 build machine has).
 
+To install all the packages *hepware* has, run:
+
+    make all.done -jN
+
 ## Where is the software placed?
 
 Into the subdirectories. Binaries go into `bin/`, include files
