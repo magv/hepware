@@ -194,7 +194,7 @@ yaml-cpp.done: build/yaml-cpp.tar.gz
 
 build/zlib.tar.xz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"http://zlib.net/zlib-1.2.13.tar.xz" \
+		"http://zlib.net/fossils/zlib-1.3.tar.gz" \
 		|| rm -f $@
 
 zlib.done: build/zlib.tar.xz
