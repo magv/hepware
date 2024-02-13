@@ -93,6 +93,7 @@ kira.done: build/kira.tar.bz2 firefly.done fermat.done flint.done ginac.done jem
 			--enable-firefly=yes
 	+${MAKE} -C build/kira-*/
 	+${MAKE} -C build/kira-*/ install
+	date >$@
 
 ## GMP
 
