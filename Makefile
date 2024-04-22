@@ -99,7 +99,7 @@ kira.done: build/kira.tar.bz2 firefly.done fermat.done flint.done ginac.done jem
 
 build/gmp.tar.xz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"https://gmplib.org/download/gmp/gmp-6.2.1.tar.xz" \
+		"https://gmplib.org/download/gmp/gmp-6.3.0.tar.xz" \
 		|| rm -f $@
 
 gmp.done: build/gmp.tar.xz
