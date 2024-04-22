@@ -139,7 +139,7 @@ mpfr.done: build/mpfr.tar.xz gmp.done
 
 build/flint.tar.gz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"http://flintlib.org/flint-2.9.0.tar.gz" \
+		"https://flintlib.org/flint-3.1.2.tar.gz" \
 		|| rm -f $@
 
 flint.done: build/flint.tar.gz gmp.done mpfr.done
@@ -147,9 +147,14 @@ flint.done: build/flint.tar.gz gmp.done mpfr.done
 	cd build && tar xf flint.tar.gz
 	cd build/flint-*/ && \
 		./configure \
-			--prefix="${DIR}" --enable-static --disable-shared \
-			CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS} -ansi -pedantic -Wall -O3 -funroll-loops -g"
-	+${MAKE} -C build/flint-*/ QUIET_CC="" QUIET_CXX="" QUIET_AR=""
+			--prefix="${DIR}" --libdir="${DIR}/lib" \
+			--enable-static --disable-shared \
+			--enable-arch=no \
+			--with-gmp="${DIR}" --with-mpfr="${DIR}" \
+			CC="${CC}" CXX="${CXX}" \
+			CFLAGS="${DEP_CFLAGS} -g -pedantic -std=c11 -O3 -Werror=implicit-function-declaration" \
+			LDFLAGS="${DEP_LDFLAGS}"
+	+${MAKE} -C build/flint-*/
 	+${MAKE} -C build/flint-*/ install
 	date >$@
 
