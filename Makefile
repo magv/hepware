@@ -86,7 +86,7 @@ kira.done: build/kira.tar.bz2 firefly.done fermat.done flint.done ginac.done jem
 			CLN_CFLAGS="-I." CLN_LIBS="-lcln" \
 			YAML_CPP_CFLAGS="-I." YAML_CPP_LIBS="-lyaml-cpp" \
 			ZLIB_CFLAGS="-I." ZLIB_LIBS="-lz" \
-			FIREFLY_CFLAGS="-I." FIREFLY_LIBS="-ljemalloc -lfirefly -lflint" \
+			FIREFLY_CFLAGS="-I." FIREFLY_LIBS="-ljemalloc -lfirefly -lflint -lmpfr" \
 		./configure \
 			--prefix="${DIR}" --libdir="${DIR}/lib" \
 			--includedir="${DIR}/include" --bindir="${DIR}/bin" \
