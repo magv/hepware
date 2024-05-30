@@ -50,14 +50,17 @@ build/.dir:
 
 ## Jemalloc
 
-build/jemalloc.tar.bz2: build/.dir
+VER_jemalloc=5.3.0
+
+build/jemalloc-${VER_jemalloc}.tar.bz2: build/.dir
+	rm -f build/jemalloc*.tar.bz2
 	wget --no-use-server-timestamps -qO $@ \
-		"https://github.com/jemalloc/jemalloc/releases/download/5.3.0/jemalloc-5.3.0.tar.bz2" \
+		"https://github.com/jemalloc/jemalloc/releases/download/${VER_jemalloc}/jemalloc-${VER_jemalloc}.tar.bz2" \
 		|| rm -f $@
 
-jemalloc.done: build/jemalloc.tar.bz2 build/.dir
+jemalloc.done: build/jemalloc-${VER_jemalloc}.tar.bz2 build/.dir
 	rm -rf build/jemalloc-*/
-	cd build && tar xf jemalloc.tar.bz2
+	cd build && tar xf jemalloc-${VER_jemalloc}.tar.bz2
 	cd build/jemalloc-*/ && \
 		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
 		./configure \
@@ -72,6 +75,7 @@ jemalloc.done: build/jemalloc.tar.bz2 build/.dir
 ## Kira
 
 build/kira.tar.bz2: build/.dir
+	rm -f build/kira*.tar.bz2
 	wget --no-use-server-timestamps -qO $@ \
 		"https://gitlab.com/kira-pyred/kira/-/archive/master/kira-master.tar.bz2" \
 		|| rm -f $@
@@ -98,14 +102,17 @@ kira.done: build/kira.tar.bz2 firefly.done fermat.done flint.done ginac.done jem
 
 ## GMP
 
-build/gmp.tar.xz: build/.dir
+VER_gmp=6.3.0
+
+build/gmp-${VER_gmp}.tar.xz: build/.dir
+	rm -f build/gmp*.tar.xz
 	wget --no-use-server-timestamps -qO $@ \
-		"https://gmplib.org/download/gmp/gmp-6.3.0.tar.xz" \
+		"https://gmplib.org/download/gmp/gmp-${VER_gmp}.tar.xz" \
 		|| rm -f $@
 
-gmp.done: build/gmp.tar.xz
+gmp.done: build/gmp-${VER_gmp}.tar.xz
 	rm -rf build/gmp-*/
-	cd build && tar xf gmp.tar.xz
+	cd build && tar xf gmp-${VER_gmp}.tar.xz
 	cd build/gmp-*/ && \
 		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
 		./configure \
@@ -118,14 +125,17 @@ gmp.done: build/gmp.tar.xz
 
 ## MPFR
 
-build/mpfr.tar.xz: build/.dir
+VER_mpfr=4.2.1
+
+build/mpfr-${VER_mpfr}.tar.xz: build/.dir
+	rm -f build/mpfr*.tar.xz
 	wget --no-use-server-timestamps -qO $@ \
-		"https://www.mpfr.org/mpfr-4.2.1/mpfr-4.2.1.tar.xz" \
+		"https://www.mpfr.org/mpfr-${VER_mpfr}/mpfr-${VER_mpfr}.tar.xz" \
 		|| rm -f $@
 
-mpfr.done: build/mpfr.tar.xz gmp.done
+mpfr.done: build/mpfr-${VER_mpfr}.tar.xz gmp.done
 	rm -rf build/mpfr-*/
-	cd build && tar xf mpfr.tar.xz
+	cd build && tar xf mpfr-${VER_mpfr}.tar.xz
 	cd build/mpfr-*/ && \
 		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
 		./configure \
@@ -138,14 +148,17 @@ mpfr.done: build/mpfr.tar.xz gmp.done
 
 ## Flint
 
-build/flint.tar.gz: build/.dir
+VER_flint=3.1.2
+
+build/flint-${VER_flint}.tar.gz: build/.dir
+	rm -f build/flint*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
-		"https://flintlib.org/flint-3.1.2.tar.gz" \
+		"https://flintlib.org/flint-${VER_flint}.tar.gz" \
 		|| rm -f $@
 
-flint.done: build/flint.tar.gz gmp.done mpfr.done
+flint.done: build/flint-${VER_flint}.tar.gz gmp.done mpfr.done
 	rm -rf build/flint-*/
-	cd build && tar xf flint.tar.gz
+	cd build && tar xf flint-${VER_flint}.tar.gz
 	cd build/flint-*/ && sed -i -e 's/^\t@/\t/' -e '/^.SILENT:/d' Makefile.in
 	cd build/flint-*/ && \
 		./configure \
@@ -163,6 +176,7 @@ flint.done: build/flint.tar.gz gmp.done mpfr.done
 ## Forcer
 
 build/forcer.tar.gz: build/.dir
+	rm -f build/forcer*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
 		"https://github.com/benruijl/forcer/archive/refs/heads/master.tar.gz" \
 		|| rm -f $@
@@ -177,14 +191,17 @@ forcer.done: build/forcer.tar.gz form.done
 
 ## Yaml-cpp
 
-build/yaml-cpp.tar.gz: build/.dir
+VER_yaml_cpp=0.7.0
+
+build/yaml-cpp-${VER_yaml_cpp}.tar.gz: build/.dir
+	rm -f build/yaml-cpp*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
-		"https://github.com/jbeder/yaml-cpp/archive/refs/tags/yaml-cpp-0.7.0.tar.gz" \
+		"https://github.com/jbeder/yaml-cpp/archive/refs/tags/yaml-cpp-${VER_yaml_cpp}.tar.gz" \
 		|| rm -f $@
 
-yaml-cpp.done: build/yaml-cpp.tar.gz
+yaml-cpp.done: build/yaml-cpp-${VER_yaml_cpp}.tar.gz
 	rm -rf build/yaml-cpp-*/
-	cd build && tar xf yaml-cpp.tar.gz
+	cd build && tar xf yaml-cpp-${VER_yaml_cpp}.tar.gz
 	cd build/yaml-cpp-*/ && \
 		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
 		cmake . \
@@ -200,14 +217,17 @@ yaml-cpp.done: build/yaml-cpp.tar.gz
 
 ## zlib
 
-build/zlib.tar.xz: build/.dir
+VER_zlib=1.3.1
+
+build/zlib-${VER_zlib}.tar.xz: build/.dir
+	rm -f build/zlib*.tar.xz
 	wget --no-use-server-timestamps -qO $@ \
-		"http://zlib.net/fossils/zlib-1.3.1.tar.gz" \
+		"http://zlib.net/fossils/zlib-${VER_zlib}.tar.gz" \
 		|| rm -f $@
 
-zlib.done: build/zlib.tar.xz
+zlib.done: build/zlib-${VER_zlib}.tar.xz
 	rm -rf build/zlib-*/
-	cd build && tar xf zlib.tar.xz
+	cd build && tar xf zlib-${VER_zlib}.tar.xz
 	cd build/zlib-*/ && \
 		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" \
 		./configure \
@@ -219,6 +239,7 @@ zlib.done: build/zlib.tar.xz
 ## Fuchsia
 
 build/fuchsia.tar.gz: build/.dir
+	rm -f build/fuchsia.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
 		"https://github.com/magv/fuchsia.cpp/archive/refs/heads/master.tar.gz" \
 		|| rm -f $@
@@ -235,6 +256,7 @@ fuchsia.done: build/fuchsia.tar.gz ginac.done
 ## Ratnormal
 
 build/ratnormal.tar.gz: build/.dir
+	rm -f build/ratnormal*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
 		"https://github.com/magv/ratnormal/archive/refs/heads/master.tar.gz" \
 		|| rm -f $@
@@ -250,6 +272,7 @@ ratnormal.done: build/ratnormal.tar.gz ginac.done flint.done
 ## Ratracer
 
 build/ratracer.tar.gz: build/.dir
+	rm -f build/ratracer*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
 		"https://github.com/magv/ratracer/archive/refs/heads/master.tar.gz" \
 		|| rm -f $@
@@ -272,6 +295,7 @@ ratracer.done: build/ratracer.tar.gz ginac.done flint.done gmp.done jemalloc.don
 ## Hypothread
 
 build/hypothread.tar.gz: build/.dir
+	rm -f build/hypothread*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
 		"https://github.com/magv/hypothread/archive/refs/heads/master.tar.gz" \
 		|| rm -f $@
@@ -287,30 +311,36 @@ hypothread.done: build/hypothread.tar.gz
 
 ## QGRAF
 
-build/qgraf.tar.gz: build/.dir
+VER_qgraf=3.6.7
+
+build/qgraf-${VER_qgraf}.tar.gz: build/.dir
+	rm -f build/qgraf*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
 		--user anonymous --password anonymous \
-		"http://qgraf.tecnico.ulisboa.pt/links/qgraf-3.6.7.tgz" \
+		"http://qgraf.tecnico.ulisboa.pt/links/qgraf-${VER_qgraf}.tgz" \
 		|| rm -f $@
 
-qgraf.done: build/qgraf.tar.gz
+qgraf.done: build/qgraf-${VER_qgraf}.tar.gz
 	rm -rf build/qgraf/
 	mkdir -p build/qgraf bin
-	cd build/qgraf && tar xf ../qgraf.tar.gz
+	cd build/qgraf && tar xf ../qgraf-${VER_qgraf}.tar.gz
 	cd build/qgraf && ${FC} ${DEP_FFLAGS} -o qgraf qgraf-*.f08
 	mv build/qgraf/qgraf bin/
 	date >$@
 
 ## FORM
 
-build/form.tar.gz: build/.dir
+VER_form=4.3.1
+
+build/form-${VER_form}.tar.gz: build/.dir
+	rm -f build/form*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
-		"https://github.com/vermaseren/form/releases/download/v4.3.1/form-4.3.1.tar.gz" \
+		"https://github.com/vermaseren/form/releases/download/v${VER_form}/form-${VER_form}.tar.gz" \
 		|| rm -f $@
 
-form.done: build/form.tar.gz gmp.done zlib.done
+form.done: build/form-${VER_form}.tar.gz gmp.done zlib.done
 	rm -rf build/form-*/
-	cd build && tar xf form.tar.gz
+	cd build && tar xf form-${VER_form}.tar.gz
 	cd build/form-*/ && \
 		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
 		./configure \
@@ -329,14 +359,17 @@ form.done: build/form.tar.gz gmp.done zlib.done
 
 ## CLN
 
-build/cln.tar.bz2: build/.dir
+VER_cln=1.3.7
+
+build/cln-${VER_cln}.tar.bz2: build/.dir
+	rm -f build/cln*.tar.bz2
 	wget --no-use-server-timestamps -qO $@ \
-		"https://www.ginac.de/CLN/cln-1.3.7.tar.bz2" \
+		"https://www.ginac.de/CLN/cln-${VER_cln}.tar.bz2" \
 		|| rm -f $@
 
-cln.done: build/cln.tar.bz2 gmp.done
+cln.done: build/cln-${VER_cln}.tar.bz2 gmp.done
 	rm -rf build/cln-*/
-	cd build && tar xf cln.tar.bz2
+	cd build && tar xf cln-${VER_cln}.tar.bz2
 	cd build/cln-*/ && \
 		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
 		./configure \
@@ -352,21 +385,26 @@ cln.done: build/cln.tar.bz2 gmp.done
 
 ## Google Benchmark
 
-build/benchmark.tar.gz: build/.dir
+VER_benchmark=1.7.1
+VER_googletest=1.12.1
+
+build/benchmark-${VER_benchmark}.tar.gz: build/.dir
+	rm -f build/benchmark*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
-		"https://github.com/google/benchmark/archive/refs/tags/v1.7.1.tar.gz" || \
+		"https://github.com/google/benchmark/archive/refs/tags/v${VER_benchmark}.tar.gz" || \
 		rm -f "$@"
 
-build/googletest.tar.gz: build/.dir
+build/googletest-${VER_googletest}.tar.gz: build/.dir
+	rm -f build/googletest*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
-		"https://github.com/google/googletest/archive/refs/tags/release-1.12.1.tar.gz" || \
+		"https://github.com/google/googletest/archive/refs/tags/release-${VER_googletest}.tar.gz" || \
 		rm -f "$@"
 
-googlebenchmark.done: build/benchmark.tar.gz build/googletest.tar.gz
+googlebenchmark.done: build/benchmark-${VER_benchmark}.tar.gz build/googletest-${VER_googletest}.tar.gz
 	rm -rf build/benchmark-*/
-	cd build && tar xf benchmark.tar.gz
+	cd build && tar xf benchmark-${VER_benchmark}.tar.gz
 	cd build/benchmark-*/ && \
-		tar xf ../googletest.tar.gz && \
+		tar xf ../googletest-${VER_googletest}.tar.gz && \
 		mv googletest-release-* googletest && \
 		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
 		cmake . \
@@ -382,14 +420,17 @@ googlebenchmark.done: build/benchmark.tar.gz build/googletest.tar.gz
 
 ## GiNaC
 
-build/ginac.tar.bz2: build/.dir
+VER_ginac=1.8.7
+
+build/ginac-${VER_ginac}.tar.bz2: build/.dir
+	rm -f build/ginac*.tar.bz2
 	wget --no-use-server-timestamps -qO $@ \
-		"https://www.ginac.de/ginac-1.8.7.tar.bz2" \
+		"https://www.ginac.de/ginac-${VER_ginac}.tar.bz2" \
 		|| rm -f $@
 
-ginac.done: build/ginac.tar.bz2 cln.done
+ginac.done: build/ginac-${VER_ginac}.tar.bz2 cln.done
 	rm -rf build/ginac-*/
-	cd build && tar xf ginac.tar.bz2
+	cd build && tar xf ginac-${VER_ginac}.tar.bz2
 	cd build/ginac-*/ && sed -i.bak 's/readline/NOreadline/g' configure
 	cd build/ginac-*/ && \
 		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
@@ -405,14 +446,17 @@ ginac.done: build/ginac.tar.bz2 cln.done
 
 ## Nauty and Traces
 
-build/nauty.tar.gz: build/.dir
+VER_nauty=2_8_8
+
+build/nauty-${VER_nauty}.tar.gz: build/.dir
+	rm -f build/nauty*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
-		"https://pallini.di.uniroma1.it/nauty2_8_8.tar.gz" \
+		"https://pallini.di.uniroma1.it/nauty${VER_nauty}.tar.gz" \
 		|| rm -f $@
 
-nauty.done: build/nauty.tar.gz build/.dir
+nauty.done: build/nauty-${VER_nauty}.tar.gz build/.dir
 	rm -rf build/nauty*/
-	cd build && tar xf nauty.tar.gz
+	cd build && tar xf nauty-${VER_nauty}.tar.gz
 	cd build/nauty*/ && \
 		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
 		./configure \
@@ -429,6 +473,7 @@ nauty.done: build/nauty.tar.gz build/.dir
 ## Fermat
 
 build/ferl6.tar.gz: build/.dir
+	rm -f build/ferl6.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
 		"https://home.bway.net/lewis/fermat64/ferl6.tar.gz" \
 		|| rm -f $@
@@ -444,6 +489,7 @@ fermat.done: build/ferl6.tar.gz
 ## Feynson
 
 build/feynson.tar.gz: build/.dir
+	rm -f build/feynson*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
 		"https://github.com/magv/feynson/archive/refs/heads/master.tar.gz" \
 		|| rm -f $@
@@ -459,6 +505,7 @@ feynson.done: build/feynson.tar.gz ginac.done nauty.done
 ## FIRE6
 
 build/fire6.tar.gz: build/.dir
+	rm -f build/fire*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
 		"https://bitbucket.org/feynmanIntegrals/fire/get/master.tar.gz" \
 		|| rm -f $@
@@ -478,6 +525,7 @@ fire6.done: build/fire6.tar.gz
 ## FireFly
 
 build/firefly.tar.gz: build/.dir
+	rm -f build/firefly*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
 		"https://gitlab.com/firefly-library/firefly/-/archive/master/firefly-master.tar.bz2" \
 		|| rm -f $@
@@ -505,14 +553,17 @@ firefly.done: build/firefly.tar.gz flint.done zlib.done
 
 ## Zstd
 
-build/zstd.tar.gz: build/.dir
+VER_zstd=1.5.6
+
+build/zstd-${VER_zstd}.tar.gz: build/.dir
+	rm -f build/zstd*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
-		"https://github.com/facebook/zstd/releases/download/v1.5.6/zstd-1.5.6.tar.gz" \
+		"https://github.com/facebook/zstd/releases/download/v${VER_zstd}/zstd-${VER_zstd}.tar.gz" \
 		|| rm -f $@
 
-zstd.done: build/zstd.tar.gz zlib.done
+zstd.done: build/zstd-${VER_zstd}.tar.gz zlib.done
 	rm -rf build/zstd-*/
-	cd build && tar xf zstd.tar.gz
+	cd build && tar xf zstd-${VER_zstd}.tar.gz
 	@# build libzstd.a, libastd_zlibwrapper.a, and zstd
 	+${MAKE} -C build/zstd-*/lib/ CFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" VERBOSE=1 libzstd.a-release-nomt 
 	+${MAKE} -C build/zstd-*/programs/ CFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" VERBOSE=1 HAVE_ZLIB=no HAVE_LZMA=no HAVE_LZ4=no zstd-nomt
