@@ -78,6 +78,7 @@ work.
 * [Ratracer] (`ratracer.done`).
 * [Yaml-cpp] (`yaml-cpp.done`).
 * [zlib] (`zlib.done`).
+* [Zstd] (`zstd.done`).
 
 [cln]: https://www.ginac.de/CLN/
 [fermat]: http://home.bway.net/lewis
@@ -101,3 +102,4 @@ work.
 [ratracer]: https://github.com/magv/ratracer
 [yaml-cpp]: https://github.com/jbeder/yaml-cpp
 [zlib]: https://www.zlib.net/
+[Zstd]: https://www.zstd.net/
