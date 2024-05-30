@@ -102,4 +102,4 @@ work.
 [ratracer]: https://github.com/magv/ratracer
 [yaml-cpp]: https://github.com/jbeder/yaml-cpp
 [zlib]: https://www.zlib.net/
-[Zstd]: https://www.zstd.net/
+[Zstd]: http://www.zstd.net/
