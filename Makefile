@@ -27,7 +27,8 @@ ALL=\
 	ratnormal \
 	ratracer \
 	yaml-cpp \
-	zlib
+	zlib \
+	zstd
 
 all.done: $(addsuffix .done,${ALL}) phony
 
