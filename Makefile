@@ -406,7 +406,7 @@ ginac.done: build/ginac.tar.bz2 cln.done
 
 build/nauty.tar.gz: build/.dir
 	wget --no-use-server-timestamps -qO $@ \
-		"https://pallini.di.uniroma1.it/nauty2_8_6.tar.gz" \
+		"https://pallini.di.uniroma1.it/nauty2_8_8.tar.gz" \
 		|| rm -f $@
 
 nauty.done: build/nauty.tar.gz build/.dir
