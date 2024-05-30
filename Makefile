@@ -146,6 +146,7 @@ build/flint.tar.gz: build/.dir
 flint.done: build/flint.tar.gz gmp.done mpfr.done
 	rm -rf build/flint-*/
 	cd build && tar xf flint.tar.gz
+	cd build/flint-*/ && sed -i -e 's/^\t@/\t/' -e '/^.SILENT:/d' Makefile.in
 	cd build/flint-*/ && \
 		./configure \
 			--prefix="${DIR}" --libdir="${DIR}/lib" \
