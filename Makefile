@@ -148,7 +148,7 @@ mpfr.done: build/mpfr-${VER_mpfr}.tar.xz gmp.done
 
 ## Flint
 
-VER_flint=3.1.2
+VER_flint=2.9.0
 
 build/flint-${VER_flint}.tar.gz: build/.dir
 	rm -f build/flint*.tar.gz
@@ -162,14 +162,9 @@ flint.done: build/flint-${VER_flint}.tar.gz gmp.done mpfr.done
 	cd build/flint-*/ && sed -i -e 's/^\t@/\t/' -e '/^.SILENT:/d' Makefile.in
 	cd build/flint-*/ && \
 		./configure \
-			--prefix="${DIR}" --libdir="${DIR}/lib" \
-			--enable-static --disable-shared \
-			--enable-arch=no \
-			--with-gmp="${DIR}" --with-mpfr="${DIR}" \
-			CC="${CC}" CXX="${CXX}" \
-			CFLAGS="${DEP_CFLAGS} -g -pedantic -std=c11 -O3 -Werror=implicit-function-declaration" \
-			LDFLAGS="${DEP_LDFLAGS}"
-	+${MAKE} -C build/flint-*/
+			--prefix="${DIR}" --enable-static --disable-shared \
+			CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS} -ansi -Wall -O3 -funroll-loops -g"
+	+${MAKE} -C build/flint-*/ QUIET_CC="" QUIET_CXX="" QUIET_AR=""
 	+${MAKE} -C build/flint-*/ install
 	date >$@
 
