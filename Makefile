@@ -306,7 +306,7 @@ hypothread.done: build/hypothread.tar.gz
 
 ## QGRAF
 
-VER_qgraf=3.6.7
+VER_qgraf=3.6
 
 build/qgraf-${VER_qgraf}.tar.gz: build/.dir
 	rm -f build/qgraf*.tar.gz
