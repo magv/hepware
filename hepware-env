@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+"""\
+This program prints shell instructions that add (or remove)
+Hepware to environment variables PATH, CFLAGS, CXXFLAGS, LDFLAGS,
+and PKG_CONFIG_PATH.
+
+For sh/bash/ksh users, to add Hepware to their environment, run:
+
+    eval `/path/to/hepware/hepware-env`
+
+For csh/tcsh users:
+
+    eval `/path/to/hepware/hepware-env --csh`
+
+Usage:
+  hepware-env [-h] [--add|--remove] [--sh|--csh]
+
+Options:
+  -h, --help  show this help message and exit
+  --add       add Hepware to the environment (default)
+  --remove    remove Hepware from the environment
+  --sh        use sh/bash/ksh syntax (default)
+  --csh       use csh/tcsh syntax
+"""
+
+import argparse
+import os
+
+def dedup(items):
+    seen = set()
+    result = []
+    for item in items:
+        if item not in seen:
+            seen.add(item)
+            result.append(item)
+    return result
+
+def env_add(var_name, separator, value):
+    old = os.environ.get(var_name, "")
+    new = separator.join(
+        dedup([value] + old.split(separator)) if old else [value]
+    )
+    return {var_name: new} if new != old else {}
+
+def env_remove(var_name, separator, value):
+    old = os.environ.get(var_name, "")
+    new = separator.join(
+        dedup(p for p in old.split(separator) if p != value) if old else []
+    )
+    return {var_name: new} if new != old else {}
+
+def syntax_sh(key, value):
+    return f"export {key}={value}" if value else f"unset {key}"
+
+def syntax_csh(key, value):
+    return f"setenv {key} {value}" if value else f"unsetenv {key}"
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(prog="hepware-env")
+    parser.print_help = lambda: print(__doc__)
+    parser.add_argument("--add",    dest="mode",   action="store_const", const="add",    default="add")
+    parser.add_argument("--remove", dest="mode",   action="store_const", const="remove", default="add")
+    parser.add_argument("--sh",     dest="syntax", action="store_const", const="sh",     default="sh")
+    parser.add_argument("--csh",    dest="syntax", action="store_const", const="csh",    default="sh")
+    args = parser.parse_args()
+
+    modify = {"add": env_add, "remove": env_remove}[args.mode]
+    syntax = {"sh": syntax_sh, "csh": syntax_csh}[args.syntax]
+    topdir = os.path.abspath(os.path.dirname(__file__))
+
+    cmd = {
+        **modify("CFLAGS",           " ", "-I" + os.path.join(topdir, "include")),
+        **modify("CXXFLAGS",         " ", "-I" + os.path.join(topdir, "include")),
+        **modify("LDFLAGS",          " ", "-L" + os.path.join(topdir, "lib")),
+        **modify("PATH",             ":", os.path.join(topdir, "bin")),
+        **modify("PKG_CONFIG_PATH",  ":", os.path.join(topdir, "lib", "pkgconfig"))
+    }
+    if cmd:
+        print(" ;\n".join(syntax(key, value) for key, value in cmd.items()))
