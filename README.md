@@ -33,9 +33,16 @@ To use the installed programs you'll probably want to add the
     export PATH=/path/to/hepware/bin:$PATH
 
 Similarly, to use the libraries you'll need to add
-`-I/path/to/hepware/include` flag to your C compiler options and
-`-L/path/to/hepware/lib` flag to your linker options. How to do
-this depends on the software you are trying to compile.
+`-I/path/to/hepware/include` flag to your C compiler options
+and `-L/path/to/hepware/lib` flag to your linker options. How
+to do this depends on the software you are trying to compile,
+but adding those to `CFLAGS` and `LDFLAGS` respectively should
+work most of the time.
+
+To automate the manipulation of the environment variables, please
+try the included `hepware-env` script, like this:
+
+    eval `/path/to/hepware/hepware-env`
 
 ## What is required?
 
