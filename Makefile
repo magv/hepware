@@ -570,3 +570,27 @@ zstd.done: build/zstd-${VER_zstd}.tar.gz zlib.done
 	cd build/zstd-*/zlibWrapper/ && cp -a libzstd_zlibwrapper.a "${DIR}/lib/"
 	cd build/zstd-*/zlibWrapper/ && cp -a zstd_zlibwrapper.h "${DIR}/include/"
 	date >$@
+
+# LHAPDF
+
+VER_lhapdf=6.5.4
+
+build/lhapdf-${VER_lhapdf}.tar.gz: build/.dir
+	rm -f build/lhapdf*.tar.gz
+	wget --no-use-server-timestamps -qO $@ \
+		"https://lhapdf.hepforge.org/downloader?f=LHAPDF-${VER_lhapdf}.tar.gz" \
+		|| rm -f $@
+
+lhapdf.done: build/lhapdf-${VER_lhapdf}.tar.gz build/.dir
+	rm -rf build/LHAPDF-*/
+	cd build && tar xf lhapdf-${VER_lhapdf}.tar.gz
+	cd build/LHAPDF-*/ && \
+		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS} -fPIC" CXXFLAGS="${DEP_CFLAGS} -fPIC" LDFLAGS="${DEP_LDFLAGS}" \
+		PYTHON_VERSION=3 \
+		./configure \
+			--prefix="${DIR}" --libdir="${DIR}/lib" \
+			--includedir="${DIR}/include" --bindir="${DIR}/bin" \
+			--enable-static --disable-shared --disable-doxygen --disable-python
+	+${MAKE} -C build/LHAPDF-*/ V=1
+	+${MAKE} -C build/LHAPDF-*/ install
+	date >$@

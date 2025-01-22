@@ -78,6 +78,7 @@ work.
 * [Hypothread] (`hypothread.done`).
 * [Jemalloc] (`jemalloc.done`).
 * [Kira] (`kira.done`).
+* [LHAPDF] (`lhapdf.done`).
 * [MPFR] (`mpfr.done`).
 * [Nauty and Traces] (`nauty.done`).
 * [QGraf] (`qgraf.done`).
@@ -102,6 +103,7 @@ work.
 [hypothread]: https://github.com/magv/hypothread
 [jemalloc]: http://jemalloc.net/
 [kira]: https://gitlab.com/kira-pyred/kira
+[LHAPDF]: https://lhapdf.hepforge.org/
 [mpfr]: https://www.mpfr.org/
 [nauty and traces]: https://pallini.di.uniroma1.it/
 [qgraf]: http://cfif.ist.utl.pt/~paulo/qgraf.html
