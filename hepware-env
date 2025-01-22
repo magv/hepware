@@ -4,23 +4,34 @@ This program prints shell instructions that add (or remove)
 Hepware to environment variables PATH, CFLAGS, CXXFLAGS, LDFLAGS,
 and PKG_CONFIG_PATH.
 
-For sh/bash/ksh users, to add Hepware to their environment, run:
+For sh, bash, ksh, and zsh users, to add Hepware to their
+environment, run:
 
-    eval `/path/to/hepware/hepware-env`
+  eval `/path/to/hepware/hepware-env`
 
-For csh/tcsh users:
+For csh and tcsh users:
 
-    eval `/path/to/hepware/hepware-env --csh`
+  eval `/path/to/hepware/hepware-env --csh`
+
+For fish users:
+
+  eval (/path/to/hepware/hepware-env --fish)
+
+For xonsh users:
+
+  execx($(/path/to/hepware/hepware-env --xonsh))
 
 Usage:
-  hepware-env [-h] [--add|--remove] [--sh|--csh]
+  hepware-env [-h] [--add|--remove] [--sh|--csh|--fish|--xonsh]
 
 Options:
   -h, --help  show this help message and exit
   --add       add Hepware to the environment (default)
   --remove    remove Hepware from the environment
-  --sh        use sh/bash/ksh syntax (default)
+  --sh        use sh/bash/ksh/zsh syntax (default)
   --csh       use csh/tcsh syntax
+  --fish      use fish syntax
+  --xonsh     use xonsh syntax
 """
 
 import argparse
@@ -55,25 +66,31 @@ def syntax_sh(key, value):
 def syntax_csh(key, value):
     return f"setenv {key} {value}" if value else f"unsetenv {key}"
 
+def syntax_fish(key, value):
+    return f"set --global {key} {value}" if value else f"set --erase {key}"
+
+def syntax_xonsh(key, value):
+    return f"${key}={value!r}" if value else f"del ${{{key!r}}}"
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="hepware-env")
     parser.print_help = lambda: print(__doc__)
-    parser.add_argument("--add",    dest="mode",   action="store_const", const="add",    default="add")
-    parser.add_argument("--remove", dest="mode",   action="store_const", const="remove", default="add")
-    parser.add_argument("--sh",     dest="syntax", action="store_const", const="sh",     default="sh")
-    parser.add_argument("--csh",    dest="syntax", action="store_const", const="csh",    default="sh")
+    parser.add_argument("--add",    dest="mode",   action="store_const", const=env_add,      default=env_add)
+    parser.add_argument("--remove", dest="mode",   action="store_const", const=env_remove,   default=env_add)
+    parser.add_argument("--sh",     dest="syntax", action="store_const", const=syntax_sh,    default=syntax_sh)
+    parser.add_argument("--csh",    dest="syntax", action="store_const", const=syntax_csh,   default=syntax_sh)
+    parser.add_argument("--fish",   dest="syntax", action="store_const", const=syntax_fish,  default=syntax_sh)
+    parser.add_argument("--xonsh",  dest="syntax", action="store_const", const=syntax_xonsh, default=syntax_sh)
     args = parser.parse_args()
 
-    modify = {"add": env_add, "remove": env_remove}[args.mode]
-    syntax = {"sh": syntax_sh, "csh": syntax_csh}[args.syntax]
     topdir = os.path.abspath(os.path.dirname(__file__))
 
     cmd = {
-        **modify("CFLAGS",           " ", "-I" + os.path.join(topdir, "include")),
-        **modify("CXXFLAGS",         " ", "-I" + os.path.join(topdir, "include")),
-        **modify("LDFLAGS",          " ", "-L" + os.path.join(topdir, "lib")),
-        **modify("PATH",             ":", os.path.join(topdir, "bin")),
-        **modify("PKG_CONFIG_PATH",  ":", os.path.join(topdir, "lib", "pkgconfig"))
+        **args.mode("CFLAGS",          " ", "-I" + os.path.join(topdir, "include")),
+        **args.mode("CXXFLAGS",        " ", "-I" + os.path.join(topdir, "include")),
+        **args.mode("LDFLAGS",         " ", "-L" + os.path.join(topdir, "lib")),
+        **args.mode("PATH",            ":", os.path.join(topdir, "bin")),
+        **args.mode("PKG_CONFIG_PATH", ":", os.path.join(topdir, "lib", "pkgconfig"))
     }
     if cmd:
-        print(" ;\n".join(syntax(key, value) for key, value in cmd.items()))
+        print(";\n".join(args.syntax(key, value) for key, value in cmd.items()))
