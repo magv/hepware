@@ -415,7 +415,7 @@ googlebenchmark.done: build/benchmark-${VER_benchmark}.tar.gz build/googletest-$
 
 ## GiNaC
 
-VER_ginac=1.8.7
+VER_ginac=1.8.8
 
 build/ginac-${VER_ginac}.tar.bz2: build/.dir
 	rm -f build/ginac*.tar.bz2
