@@ -510,8 +510,15 @@ fire6.done: build/fire6.tar.gz zlib.done
 	cd build && tar xf fire6.tar.gz
 	cd build/feynmanIntegrals-fire-*/FIRE6 && \
 		./configure --enable_zlib --enable_snappy --enable_lthreads --enable_tcmalloc --enable_zstd
-	+${MAKE} -C build/feynmanIntegrals-fire-*/FIRE6 dep
-	+${MAKE} -C build/feynmanIntegrals-fire-*/FIRE6
+	cd build/feynmanIntegrals-fire-*/FIRE6 && \
+		sed -i.bak \
+			-e 's/LFLAGS *=/LFLAGS = $${LDFLAGS}/' \
+			-e 's/CFLAGS *=/CFLAGS += /' \
+			$$(find . -name Makefile)
+	+env CFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
+		${MAKE} -C build/feynmanIntegrals-fire-*/FIRE6 dep
+	+env CFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
+		${MAKE} -C build/feynmanIntegrals-fire-*/FIRE6
 	rm -rf share/fire6/
 	mv build/feynmanIntegrals-fire-*/FIRE6 share/fire6
 	date >$@
