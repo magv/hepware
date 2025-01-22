@@ -153,7 +153,7 @@ VER_flint=2.9.0
 build/flint-${VER_flint}.tar.gz: build/.dir
 	rm -f build/flint*.tar.gz
 	wget --no-use-server-timestamps -qO $@ \
-		"https://flintlib.org/flint-${VER_flint}.tar.gz" \
+		"https://flintlib.org/download/flint-${VER_flint}.tar.gz" \
 		|| rm -f $@
 
 flint.done: build/flint-${VER_flint}.tar.gz gmp.done mpfr.done
