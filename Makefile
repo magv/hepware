@@ -505,7 +505,7 @@ build/fire6.tar.gz: build/.dir
 		"https://bitbucket.org/feynmanIntegrals/fire/get/master.tar.gz" \
 		|| rm -f $@
 
-fire6.done: build/fire6.tar.gz
+fire6.done: build/fire6.tar.gz zlib.done
 	rm -rf build/feynmanIntegrals-fire-*/
 	cd build && tar xf fire6.tar.gz
 	cd build/feynmanIntegrals-fire-*/FIRE6 && \
