@@ -126,7 +126,7 @@ gmp.done: build/gmp-${VER_gmp}.tar.xz
 
 ## MPFR
 
-VER_mpfr=4.2.1
+VER_mpfr=4.2.2
 
 build/mpfr-${VER_mpfr}.tar.xz: build/.dir
 	rm -f build/mpfr*.tar.xz
