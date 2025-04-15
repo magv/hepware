@@ -111,4 +111,4 @@ work.
 [ratracer]: https://github.com/magv/ratracer
 [yaml-cpp]: https://github.com/jbeder/yaml-cpp
 [zlib]: https://www.zlib.net/
-[Zstd]: http://www.zstd.net/
+[Zstd]: https://github.com/facebook/zstd

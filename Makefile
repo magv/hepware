@@ -556,7 +556,7 @@ firefly.done: build/firefly.tar.gz flint.done zlib.done
 
 ## Zstd
 
-VER_zstd=1.5.6
+VER_zstd=1.5.7
 
 build/zstd-${VER_zstd}.tar.gz: build/.dir
 	rm -f build/zstd*.tar.gz
