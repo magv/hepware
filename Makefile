@@ -326,15 +326,15 @@ qgraf.done: build/qgraf-${VER_qgraf}.tar.gz
 
 ## FORM
 
-VER_form=4.3.1
+VER_form=5.0.0
 
 build/form-${VER_form}.tar.gz: build/.dir
 	rm -f build/form*.tar.gz
 	${FETCH} $@ \
-		"https://github.com/vermaseren/form/releases/download/v${VER_form}/form-${VER_form}.tar.gz" \
+		"https://github.com/form-dev/form/releases/download/v${VER_form}/form-${VER_form}.tar.gz" \
 		|| rm -f $@
 
-form.done: build/form-${VER_form}.tar.gz gmp.done zlib.done
+form.done: build/form-${VER_form}.tar.gz gmp.done mpfr.done zlib.done zstd.done flint.done
 	rm -rf build/form-*/
 	cd build && tar xf form-${VER_form}.tar.gz
 	cd build/form-*/ && \
@@ -347,8 +347,14 @@ form.done: build/form-${VER_form}.tar.gz gmp.done zlib.done
 			--enable-threaded=yes \
 			--enable-debug=yes \
 			--enable-parform=no \
+			--enable-float=yes \
 			--enable-static-link=no \
-			--enable-native=no
+			--enable-native=no \
+			--with-gmp \
+			--with-mpfr \
+			--with-zlib \
+			--with-zstd \
+			--with-flint
 	+${MAKE} -C build/form-*/
 	+${MAKE} -C build/form-*/ install
 	date >$@

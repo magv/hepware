@@ -95,7 +95,7 @@ work.
 [firefly]: https://gitlab.com/firefly-library/firefly
 [flint]: https://flintlib.org/
 [forcer]: https://github.com/benruijl/forcer
-[form]: https://github.com/vermaseren/form
+[form]: https://github.com/form-dev/form
 [fuchsia]: https://github.com/magv/fuchsia.cpp
 [ginac]: https://www.ginac.de/
 [gmp]: https://gmplib.org/
