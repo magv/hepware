@@ -213,7 +213,7 @@ yaml-cpp.done: build/yaml-cpp-${VER_yaml_cpp}.tar.gz
 
 ## zlib
 
-VER_zlib=1.3.1
+VER_zlib=1.3.2
 
 build/zlib-${VER_zlib}.tar.xz: build/.dir
 	rm -f build/zlib*.tar.xz
