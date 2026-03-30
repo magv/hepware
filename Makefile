@@ -442,7 +442,7 @@ ginac.done: build/ginac-${VER_ginac}.tar.bz2 cln.done
 
 ## Nauty and Traces
 
-VER_nauty=2_8_9
+VER_nauty=2_9_3
 
 build/nauty-${VER_nauty}.tar.gz: build/.dir
 	rm -f build/nauty*.tar.gz
