@@ -22,13 +22,14 @@ For xonsh users:
   execx($(/path/to/hepware/hepware-env --xonsh))
 
 Usage:
-  hepware-env [-h] [--add|--remove] [--sh|--csh|--fish|--xonsh]
+  hepware-env [-h] [--add|--remove] [--sh|--bash|--csh|--fish|--xonsh]
 
 Options:
   -h, --help  show this help message and exit
   --add       add Hepware to the environment (default)
   --remove    remove Hepware from the environment
   --sh        use sh/bash/ksh/zsh syntax (default)
+  --bash      same as --sh
   --csh       use csh/tcsh syntax
   --fish      use fish syntax
   --xonsh     use xonsh syntax
@@ -67,7 +68,7 @@ def syntax_csh(key, value):
     return f"setenv {key} {value}" if value else f"unsetenv {key}"
 
 def syntax_fish(key, value):
-    return f"set --global {key} {value}" if value else f"set --erase {key}"
+    return f"export {key}={value}" if value else f"set --erase {key}"
 
 def syntax_xonsh(key, value):
     return f"${key}={value!r}" if value else f"del ${{{key!r}}}"
@@ -78,6 +79,7 @@ if __name__ == "__main__":
     parser.add_argument("--add",    dest="mode",   action="store_const", const=env_add,      default=env_add)
     parser.add_argument("--remove", dest="mode",   action="store_const", const=env_remove,   default=env_add)
     parser.add_argument("--sh",     dest="syntax", action="store_const", const=syntax_sh,    default=syntax_sh)
+    parser.add_argument("--bash",   dest="syntax", action="store_const", const=syntax_sh,    default=syntax_sh)
     parser.add_argument("--csh",    dest="syntax", action="store_const", const=syntax_csh,   default=syntax_sh)
     parser.add_argument("--fish",   dest="syntax", action="store_const", const=syntax_fish,  default=syntax_sh)
     parser.add_argument("--xonsh",  dest="syntax", action="store_const", const=syntax_xonsh, default=syntax_sh)
