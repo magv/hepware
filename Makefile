@@ -387,8 +387,8 @@ cln.done: build/cln-${VER_cln}.tar.bz2 gmp.done
 
 ## Google Benchmark
 
-VER_benchmark=1.7.1
-VER_googletest=1.12.1
+VER_benchmark=1.9.5
+VER_googletest=1.17.0
 
 build/benchmark-${VER_benchmark}.tar.gz: build/.dir
 	rm -f build/benchmark*.tar.gz
@@ -399,7 +399,7 @@ build/benchmark-${VER_benchmark}.tar.gz: build/.dir
 build/googletest-${VER_googletest}.tar.gz: build/.dir
 	rm -f build/googletest*.tar.gz
 	${FETCH} $@ \
-		"https://github.com/google/googletest/archive/refs/tags/release-${VER_googletest}.tar.gz" || \
+		"https://github.com/google/googletest/releases/download/v1.17.0/googletest-${VER_googletest}.tar.gz" || \
 		rm -f "$@"
 
 googlebenchmark.done: build/benchmark-${VER_benchmark}.tar.gz build/googletest-${VER_googletest}.tar.gz
@@ -407,7 +407,7 @@ googlebenchmark.done: build/benchmark-${VER_benchmark}.tar.gz build/googletest-$
 	cd build && tar xf benchmark-${VER_benchmark}.tar.gz
 	cd build/benchmark-*/ && \
 		tar xf ../googletest-${VER_googletest}.tar.gz && \
-		mv googletest-release-* googletest && \
+		mv googletest-* googletest && \
 		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
 		cmake . \
 			-DCMAKE_INSTALL_PREFIX="${DIR}" \
