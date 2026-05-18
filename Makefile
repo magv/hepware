@@ -334,7 +334,7 @@ build/form-${VER_form}.tar.gz: build/.dir
 		"https://github.com/form-dev/form/releases/download/v${VER_form}/form-${VER_form}.tar.gz" \
 		|| rm -f $@
 
-form.done: build/form-${VER_form}.tar.gz gmp.done mpfr.done zlib.done zstd.done flint.done
+form.done: build/form-${VER_form}.tar.gz gmp.done mpfr.done zlib.done zstd.done
 	rm -rf build/form-*/
 	cd build && tar xf form-${VER_form}.tar.gz
 	cd build/form-*/ && \
@@ -342,7 +342,6 @@ form.done: build/form-${VER_form}.tar.gz gmp.done mpfr.done zlib.done zstd.done 
 		./configure \
 			--prefix="${DIR}" --libdir="${DIR}/lib" \
 			--includedir="${DIR}/include" --bindir="${DIR}/bin" \
-			--with-zlib="${DIR}" --with-gmp="${DIR}" \
 			--enable-scalar=yes \
 			--enable-threaded=yes \
 			--enable-debug=yes \
@@ -350,11 +349,11 @@ form.done: build/form-${VER_form}.tar.gz gmp.done mpfr.done zlib.done zstd.done 
 			--enable-float=yes \
 			--enable-static-link=no \
 			--enable-native=no \
-			--with-gmp \
-			--with-mpfr \
-			--with-zlib \
-			--with-zstd \
-			--with-flint
+			--with-gmp="${DIR}" \
+			--with-mpfr="${DIR}" \
+			--with-zlib="${DIR}" \
+			--with-zstd="${DIR}" \
+			--without-flint
 	+${MAKE} -C build/form-*/
 	+${MAKE} -C build/form-*/ install
 	date >$@
