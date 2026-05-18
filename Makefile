@@ -586,7 +586,7 @@ zstd.done: build/zstd-${VER_zstd}.tar.gz zlib.done
 
 # LHAPDF
 
-VER_lhapdf=6.5.4
+VER_lhapdf=6.5.5
 
 build/lhapdf-${VER_lhapdf}.tar.gz: build/.dir
 	rm -f build/lhapdf*.tar.gz
