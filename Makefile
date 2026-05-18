@@ -187,7 +187,7 @@ forcer.done: build/forcer.tar.gz form.done
 
 ## Yaml-cpp
 
-VER_yaml_cpp=0.7.0
+VER_yaml_cpp=0.9.0
 
 build/yaml-cpp-${VER_yaml_cpp}.tar.gz: build/.dir
 	rm -f build/yaml-cpp*.tar.gz
