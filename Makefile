@@ -51,7 +51,7 @@ build/.dir:
 
 ## Jemalloc
 
-VER_jemalloc=5.3.0
+VER_jemalloc=5.3.1
 
 build/jemalloc-${VER_jemalloc}.tar.bz2: build/.dir
 	rm -f build/jemalloc*.tar.bz2
