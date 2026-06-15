@@ -114,6 +114,7 @@ build/gmp-${VER_gmp}.tar.xz: build/.dir
 gmp.done: build/gmp-${VER_gmp}.tar.xz
 	rm -rf build/gmp-*/
 	cd build && tar xf gmp-${VER_gmp}.tar.xz
+	cd build/gmp-*/ && mv configfsf.guess config.guess
 	cd build/gmp-*/ && \
 		env CC="${CC}" CXX="${CXX}" CFLAGS="-std=c11 ${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
 		./configure \
