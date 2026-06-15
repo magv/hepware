@@ -150,7 +150,7 @@ mpfr.done: build/mpfr-${VER_mpfr}.tar.xz gmp.done
 
 ## Flint
 
-VER_flint=2.9.0
+VER_flint=3.5.0
 
 build/flint-${VER_flint}.tar.gz: build/.dir
 	rm -f build/flint*.tar.gz
@@ -161,12 +161,12 @@ build/flint-${VER_flint}.tar.gz: build/.dir
 flint.done: build/flint-${VER_flint}.tar.gz gmp.done mpfr.done
 	rm -rf build/flint-*/
 	cd build && tar xf flint-${VER_flint}.tar.gz
-	cd build/flint-*/ && sed -i -e 's/^\t@/\t/' -e '/^.SILENT:/d' Makefile.in
+	cd build/flint-*/ && mv config/configfsf.guess config/config.guess
 	cd build/flint-*/ && \
 		./configure \
 			--prefix="${DIR}" --enable-static --disable-shared \
-			CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS} -ansi -Wall -O3 -funroll-loops -g"
-	+${MAKE} -C build/flint-*/ QUIET_CC="" QUIET_CXX="" QUIET_AR=""
+			CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS} -Wno-deprecated-declarations -Wmissing-prototypes -Wno-stringop-overflow -Wno-stringop-overread -Werror=implicit-function-declaration -Wall -std=c11 -pedantic -O3 -g"
+	+${MAKE} -C build/flint-*/ V=1
 	+${MAKE} -C build/flint-*/ install
 	date >$@
 
