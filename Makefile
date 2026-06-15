@@ -549,6 +549,7 @@ firefly.done: build/firefly.tar.gz flint.done zlib.done
 		build/firefly-*/CMakeLists.txt
 	cd build/firefly-*/ && \
 		env CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" CXXFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" \
+		CMAKE_POLICY_VERSION_MINIMUM=3.5 \
 		cmake . \
 			-DCMAKE_INSTALL_PREFIX="${DIR}" -DCMAKE_INSTALL_LIBDIR="lib" \
 			-DWITH_FLINT=true \
