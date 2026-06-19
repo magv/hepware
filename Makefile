@@ -164,7 +164,8 @@ flint.done: build/flint-${VER_flint}.tar.gz gmp.done mpfr.done
 	cd build/flint-*/ && mv config/configfsf.guess config/config.guess
 	cd build/flint-*/ && \
 		./configure \
-			--prefix="${DIR}" --enable-static --disable-shared \
+			--prefix="${DIR}" --libdir="${DIR}/lib" \
+			--enable-static --disable-shared \
 			CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS} -Wno-deprecated-declarations -Wmissing-prototypes -Wno-stringop-overflow -Wno-stringop-overread -Werror=implicit-function-declaration -Wall -std=c11 -pedantic -O3 -g"
 	+${MAKE} -C build/flint-*/ V=1
 	+${MAKE} -C build/flint-*/ install
