@@ -576,9 +576,9 @@ zstd.done: build/zstd-${VER_zstd}.tar.gz zlib.done
 	rm -rf build/zstd-*/
 	cd build && tar xf zstd-${VER_zstd}.tar.gz
 	@# build libzstd.a, libastd_zlibwrapper.a, and zstd
-	+${MAKE} -C build/zstd-*/lib/ CFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" VERBOSE=1 libzstd.a-release-nomt 
-	+${MAKE} -C build/zstd-*/programs/ CFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" VERBOSE=1 HAVE_ZLIB=no HAVE_LZMA=no HAVE_LZ4=no zstd-nomt
-	+${MAKE} -C build/zstd-*/zlibWrapper/ CFLAGS="${DEP_CFLAGS} -DZWRAP_USE_ZSTD=1" LDFLAGS="${DEP_LDFLAGS}" VERBOSE=1 zstd_zlibwrapper.o gzclose.o gzlib.o gzread.o gzwrite.o
+	+${MAKE} -C build/zstd-*/lib/ CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" VERBOSE=1 libzstd.a-release-nomt
+	+${MAKE} -C build/zstd-*/programs/ CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS}" LDFLAGS="${DEP_LDFLAGS}" VERBOSE=1 HAVE_ZLIB=no HAVE_LZMA=no HAVE_LZ4=no zstd-nomt
+	+${MAKE} -C build/zstd-*/zlibWrapper/ CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS} -DZWRAP_USE_ZSTD=1" LDFLAGS="${DEP_LDFLAGS}" VERBOSE=1 zstd_zlibwrapper.o gzclose.o gzlib.o gzread.o gzwrite.o
 	cd build/zstd-*/zlibWrapper/ && ${AR} rcs libzstd_zlibwrapper.a zstd_zlibwrapper.o gzclose.o gzlib.o gzread.o gzwrite.o
 	@# install libzstd.a, libastd_zlibwrapper.a, zstd*.h, and zstd
 	+${MAKE} -C build/zstd-*/lib/ PREFIX="${DIR}" VERBOSE=1 install-static install-includes
