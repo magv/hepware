@@ -143,6 +143,7 @@ mpfr.done: build/mpfr-${VER_mpfr}.tar.xz gmp.done
 		./configure \
 			--prefix="${DIR}" --libdir="${DIR}/lib" \
 			--includedir="${DIR}/include" --bindir="${DIR}/bin" \
+			--with-gmp="${DIR}" \
 			--enable-static --disable-shared --enable-thread-safe
 	+${MAKE} -C build/mpfr-*/
 	+${MAKE} -C build/mpfr-*/ install
@@ -165,6 +166,7 @@ flint.done: build/flint-${VER_flint}.tar.gz gmp.done mpfr.done
 	cd build/flint-*/ && \
 		./configure \
 			--prefix="${DIR}" --libdir="${DIR}/lib" \
+			--with-gmp="${DIR}" --with-mpfr="${DIR}" \
 			--enable-static --disable-shared \
 			CC="${CC}" CXX="${CXX}" CFLAGS="${DEP_CFLAGS} -Wno-deprecated-declarations -Wmissing-prototypes -Wno-stringop-overflow -Wno-stringop-overread -Werror=implicit-function-declaration -Wall -std=c11 -pedantic -O3 -g"
 	+${MAKE} -C build/flint-*/ V=1
