@@ -39,8 +39,8 @@ clean: phony
 phony:;
 
 DIR=${CURDIR}
-DEP_CFLAGS=-I${DIR}/include -O3 -g -fno-omit-frame-pointer -fdata-sections -ffunction-sections ${CFLAGS}
-DEP_FFLAGS=-I${DIR}/include -O3 ${FFLAGS}
+DEP_CFLAGS=-I${DIR}/include -O3 -g -fPIC -fno-omit-frame-pointer -fdata-sections -ffunction-sections ${CFLAGS}
+DEP_FFLAGS=-I${DIR}/include -O3 -g -fPIC ${FFLAGS}
 DEP_LDFLAGS=-L${DIR}/lib -Wl,--gc-sections ${LDFLAGS}
 
 MAKEOVERRIDES=
