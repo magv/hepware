@@ -38,10 +38,12 @@ clean: phony
 
 phony:;
 
+-include build/conf.mk
+
 DIR=${CURDIR}
 DEP_CFLAGS=-I${DIR}/include -O3 -g -fPIC -fno-omit-frame-pointer -fdata-sections -ffunction-sections ${CFLAGS}
 DEP_FFLAGS=-I${DIR}/include -O3 -g -fPIC ${FFLAGS}
-DEP_LDFLAGS=-L${DIR}/lib -Wl,--gc-sections ${LDFLAGS}
+DEP_LDFLAGS=-L${DIR}/lib ${_CONF_LDFLAGS} ${LDFLAGS}
 
 MAKEOVERRIDES=
 
@@ -49,17 +51,31 @@ build/.dir:
 	mkdir -p bin build include lib share
 	date >$@
 
+ifneq (${_CONF_CC},${CC})
+build/conf.mk: phony | build/.dir
+	@echo "Generating $@ for CC=${CC}"
+	@echo "_CONF_CC=${CC}" > $@
+	@echo "_CONF_LDFLAGS=" >> $@
+	@echo 'int main(void){return 0;}' | \
+		${CC} -Wl,--gc-sections -x c - -o /dev/null 2>/dev/null && \
+		echo "_CONF_LDFLAGS+=-Wl,--gc-sections" >> $@ || true
+	@echo 'int main(void){return 0;}' | \
+		${CC} -Wl,-dead_strip -x c - -o /dev/null 2>/dev/null && \
+		echo "_CONF_LDFLAGS+=-Wl,-dead_strip" >> $@ || true
+	@cat $@
+endif
+
 ## Jemalloc
 
 VER_jemalloc=5.3.1
 
-build/jemalloc-${VER_jemalloc}.tar.bz2: build/.dir
+build/jemalloc-${VER_jemalloc}.tar.bz2: | build/.dir
 	rm -f build/jemalloc*.tar.bz2
 	${FETCH} $@ \
 		"https://github.com/jemalloc/jemalloc/releases/download/${VER_jemalloc}/jemalloc-${VER_jemalloc}.tar.bz2" \
 		|| rm -f $@
 
-jemalloc.done: build/jemalloc-${VER_jemalloc}.tar.bz2 build/.dir
+jemalloc.done: build/jemalloc-${VER_jemalloc}.tar.bz2 | build/.dir
 	rm -rf build/jemalloc-*/
 	cd build && tar xf jemalloc-${VER_jemalloc}.tar.bz2
 	cd build/jemalloc-*/ && \
@@ -75,7 +91,7 @@ jemalloc.done: build/jemalloc-${VER_jemalloc}.tar.bz2 build/.dir
 
 ## Kira
 
-build/kira.tar.bz2: build/.dir
+build/kira.tar.bz2: | build/.dir
 	rm -f build/kira*.tar.bz2
 	${FETCH} $@ \
 		"https://gitlab.com/kira-pyred/kira/-/archive/master/kira-master.tar.bz2" \
@@ -105,7 +121,7 @@ kira.done: build/kira.tar.bz2 firefly.done fermat.done flint.done ginac.done jem
 
 VER_gmp=6.3.0
 
-build/gmp-${VER_gmp}.tar.xz: build/.dir
+build/gmp-${VER_gmp}.tar.xz: | build/.dir
 	rm -f build/gmp*.tar.xz
 	${FETCH} $@ \
 		"https://gmplib.org/download/gmp/gmp-${VER_gmp}.tar.xz" \
@@ -129,7 +145,7 @@ gmp.done: build/gmp-${VER_gmp}.tar.xz
 
 VER_mpfr=4.2.2
 
-build/mpfr-${VER_mpfr}.tar.xz: build/.dir
+build/mpfr-${VER_mpfr}.tar.xz: | build/.dir
 	rm -f build/mpfr*.tar.xz
 	${FETCH} $@ \
 		"https://www.mpfr.org/mpfr-${VER_mpfr}/mpfr-${VER_mpfr}.tar.xz" \
@@ -153,7 +169,7 @@ mpfr.done: build/mpfr-${VER_mpfr}.tar.xz gmp.done
 
 VER_flint=3.5.0
 
-build/flint-${VER_flint}.tar.gz: build/.dir
+build/flint-${VER_flint}.tar.gz: | build/.dir
 	rm -f build/flint*.tar.gz
 	${FETCH} $@ \
 		"https://flintlib.org/download/flint-${VER_flint}.tar.gz" \
@@ -175,7 +191,7 @@ flint.done: build/flint-${VER_flint}.tar.gz gmp.done mpfr.done
 
 ## Forcer
 
-build/forcer.tar.gz: build/.dir
+build/forcer.tar.gz: | build/.dir
 	rm -f build/forcer*.tar.gz
 	${FETCH} $@ \
 		"https://github.com/benruijl/forcer/archive/refs/heads/master.tar.gz" \
@@ -193,7 +209,7 @@ forcer.done: build/forcer.tar.gz form.done
 
 VER_yaml_cpp=0.9.0
 
-build/yaml-cpp-${VER_yaml_cpp}.tar.gz: build/.dir
+build/yaml-cpp-${VER_yaml_cpp}.tar.gz: | build/.dir
 	rm -f build/yaml-cpp*.tar.gz
 	${FETCH} $@ \
 		"https://github.com/jbeder/yaml-cpp/archive/refs/tags/yaml-cpp-${VER_yaml_cpp}.tar.gz" \
@@ -219,7 +235,7 @@ yaml-cpp.done: build/yaml-cpp-${VER_yaml_cpp}.tar.gz
 
 VER_zlib=1.3.2
 
-build/zlib-${VER_zlib}.tar.xz: build/.dir
+build/zlib-${VER_zlib}.tar.xz: | build/.dir
 	rm -f build/zlib*.tar.xz
 	${FETCH} $@ \
 		"http://zlib.net/fossils/zlib-${VER_zlib}.tar.gz" \
@@ -238,7 +254,7 @@ zlib.done: build/zlib-${VER_zlib}.tar.xz
 
 ## Fuchsia
 
-build/fuchsia.tar.gz: build/.dir
+build/fuchsia.tar.gz: | build/.dir
 	rm -f build/fuchsia.tar.gz
 	${FETCH} $@ \
 		"https://github.com/magv/fuchsia.cpp/archive/refs/heads/master.tar.gz" \
@@ -255,7 +271,7 @@ fuchsia.done: build/fuchsia.tar.gz ginac.done
 
 ## Ratnormal
 
-build/ratnormal.tar.gz: build/.dir
+build/ratnormal.tar.gz: | build/.dir
 	rm -f build/ratnormal*.tar.gz
 	${FETCH} $@ \
 		"https://github.com/magv/ratnormal/archive/refs/heads/master.tar.gz" \
@@ -271,7 +287,7 @@ ratnormal.done: build/ratnormal.tar.gz ginac.done flint.done
 
 ## Ratracer
 
-build/ratracer.tar.gz: build/.dir
+build/ratracer.tar.gz: | build/.dir
 	rm -f build/ratracer*.tar.gz
 	${FETCH} $@ \
 		"https://github.com/magv/ratracer/archive/refs/heads/master.tar.gz" \
@@ -294,7 +310,7 @@ ratracer.done: build/ratracer.tar.gz ginac.done flint.done gmp.done jemalloc.don
 
 ## Hypothread
 
-build/hypothread.tar.gz: build/.dir
+build/hypothread.tar.gz: | build/.dir
 	rm -f build/hypothread*.tar.gz
 	${FETCH} $@ \
 		"https://github.com/magv/hypothread/archive/refs/heads/master.tar.gz" \
@@ -313,7 +329,7 @@ hypothread.done: build/hypothread.tar.gz
 
 VER_qgraf=3.6
 
-build/qgraf-${VER_qgraf}.tar.gz: build/.dir
+build/qgraf-${VER_qgraf}.tar.gz: | build/.dir
 	rm -f build/qgraf*.tar.gz
 	${FETCH} $@ \
 		--user anonymous --password anonymous \
@@ -332,7 +348,7 @@ qgraf.done: build/qgraf-${VER_qgraf}.tar.gz
 
 VER_form=5.0.0
 
-build/form-${VER_form}.tar.gz: build/.dir
+build/form-${VER_form}.tar.gz: | build/.dir
 	rm -f build/form*.tar.gz
 	${FETCH} $@ \
 		"https://github.com/form-dev/form/releases/download/v${VER_form}/form-${VER_form}.tar.gz" \
@@ -366,7 +382,7 @@ form.done: build/form-${VER_form}.tar.gz flint.done gmp.done mpfr.done zlib.done
 
 VER_cln=1.3.7
 
-build/cln-${VER_cln}.tar.bz2: build/.dir
+build/cln-${VER_cln}.tar.bz2: | build/.dir
 	rm -f build/cln*.tar.bz2
 	${FETCH} $@ \
 		"https://www.ginac.de/CLN/cln-${VER_cln}.tar.bz2" \
@@ -393,13 +409,13 @@ cln.done: build/cln-${VER_cln}.tar.bz2 gmp.done
 VER_benchmark=1.9.5
 VER_googletest=1.17.0
 
-build/benchmark-${VER_benchmark}.tar.gz: build/.dir
+build/benchmark-${VER_benchmark}.tar.gz: | build/.dir
 	rm -f build/benchmark*.tar.gz
 	${FETCH} $@ \
 		"https://github.com/google/benchmark/archive/refs/tags/v${VER_benchmark}.tar.gz" || \
 		rm -f "$@"
 
-build/googletest-${VER_googletest}.tar.gz: build/.dir
+build/googletest-${VER_googletest}.tar.gz: | build/.dir
 	rm -f build/googletest*.tar.gz
 	${FETCH} $@ \
 		"https://github.com/google/googletest/releases/download/v1.17.0/googletest-${VER_googletest}.tar.gz" || \
@@ -427,7 +443,7 @@ googlebenchmark.done: build/benchmark-${VER_benchmark}.tar.gz build/googletest-$
 
 VER_ginac=1.8.10
 
-build/ginac-${VER_ginac}.tar.bz2: build/.dir
+build/ginac-${VER_ginac}.tar.bz2: | build/.dir
 	rm -f build/ginac*.tar.bz2
 	${FETCH} $@ \
 		"https://www.ginac.de/ginac-${VER_ginac}.tar.bz2" \
@@ -453,13 +469,13 @@ ginac.done: build/ginac-${VER_ginac}.tar.bz2 cln.done
 
 VER_nauty=2_9_3
 
-build/nauty-${VER_nauty}.tar.gz: build/.dir
+build/nauty-${VER_nauty}.tar.gz: | build/.dir
 	rm -f build/nauty*.tar.gz
 	${FETCH} $@ \
 		"https://pallini.di.uniroma1.it/nauty${VER_nauty}.tar.gz" \
 		|| rm -f $@
 
-nauty.done: build/nauty-${VER_nauty}.tar.gz build/.dir
+nauty.done: build/nauty-${VER_nauty}.tar.gz
 	rm -rf build/nauty*/
 	cd build && tar xf nauty-${VER_nauty}.tar.gz
 	cd build/nauty*/ && \
@@ -477,13 +493,13 @@ nauty.done: build/nauty-${VER_nauty}.tar.gz build/.dir
 
 ## Fermat
 
-build/ferl6.tar.gz: build/.dir
+build/ferl6.tar.gz: | build/.dir
 	rm -f build/ferl6.tar.gz
 	${FETCH} $@ \
 		"https://home.bway.net/lewis/fermat64/ferl6.tar.gz" \
 		|| rm -f $@
 
-fermat.done: build/ferl6.tar.gz
+fermat.done: build/ferl6.tar.gz | build/.dir
 	rm -rf build/ferl6*/
 	cd build && tar vxf ferl6.tar.gz
 	rm -rf share/ferl6*/
@@ -493,7 +509,7 @@ fermat.done: build/ferl6.tar.gz
 
 ## Feynson
 
-build/feynson.tar.gz: build/.dir
+build/feynson.tar.gz: | build/.dir
 	rm -f build/feynson*.tar.gz
 	${FETCH} $@ \
 		"https://github.com/magv/feynson/archive/refs/heads/master.tar.gz" \
@@ -509,7 +525,7 @@ feynson.done: build/feynson.tar.gz ginac.done nauty.done
 
 ## FIRE6
 
-build/fire6.tar.gz: build/.dir
+build/fire6.tar.gz: | build/.dir
 	rm -f build/fire*.tar.gz
 	${FETCH} $@ \
 		"https://bitbucket.org/feynmanIntegrals/fire/get/master.tar.gz" \
@@ -536,7 +552,7 @@ fire6.done: build/fire6.tar.gz zlib.done
 
 ## FireFly
 
-build/firefly.tar.gz: build/.dir
+build/firefly.tar.gz: | build/.dir
 	rm -f build/firefly*.tar.gz
 	${FETCH} $@ \
 		"https://gitlab.com/firefly-library/firefly/-/archive/master/firefly-master.tar.bz2" \
@@ -568,7 +584,7 @@ firefly.done: build/firefly.tar.gz flint.done zlib.done
 
 VER_zstd=1.5.7
 
-build/zstd-${VER_zstd}.tar.gz: build/.dir
+build/zstd-${VER_zstd}.tar.gz: | build/.dir
 	rm -f build/zstd*.tar.gz
 	${FETCH} $@ \
 		"https://github.com/facebook/zstd/releases/download/v${VER_zstd}/zstd-${VER_zstd}.tar.gz" \
@@ -593,13 +609,13 @@ zstd.done: build/zstd-${VER_zstd}.tar.gz zlib.done
 
 VER_lhapdf=6.5.5
 
-build/lhapdf-${VER_lhapdf}.tar.gz: build/.dir
+build/lhapdf-${VER_lhapdf}.tar.gz: | build/.dir
 	rm -f build/lhapdf*.tar.gz
 	${FETCH} $@ \
 		"https://lhapdf.hepforge.org/downloader?f=LHAPDF-${VER_lhapdf}.tar.gz" \
 		|| rm -f $@
 
-lhapdf.done: build/lhapdf-${VER_lhapdf}.tar.gz build/.dir
+lhapdf.done: build/lhapdf-${VER_lhapdf}.tar.gz
 	rm -rf build/LHAPDF-*/
 	cd build && tar xf lhapdf-${VER_lhapdf}.tar.gz
 	cd build/LHAPDF-*/ && \
