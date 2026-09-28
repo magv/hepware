@@ -483,10 +483,11 @@ nauty.done: build/nauty-${VER_nauty}.tar.gz
 		./configure \
 			--prefix="${DIR}" --libdir="${DIR}/lib" \
 			--includedir="${DIR}/include" --bindir="${DIR}/bin" \
-			--disable-popcnt --disable-clz --enable-generic
-	+${MAKE} -C build/nauty*/
+			--disable-popcnt --disable-clz --enable-generic --enable-tls
+	+${MAKE} -C build/nauty*/ dreadnaut nauty.a nautyT.a
 	cd build/nauty*/ && cp -a dreadnaut "${DIR}/bin/"
 	cd build/nauty*/ && cp -a nauty.a "${DIR}/lib/libnauty.a"
+	cd build/nauty*/ && cp -a nautyT.a "${DIR}/lib/libnautyT.a"
 	mkdir -p "${DIR}/include/nauty/"
 	cd build/nauty*/ && cp -a *.h "${DIR}/include/nauty/"
 	date >$@
